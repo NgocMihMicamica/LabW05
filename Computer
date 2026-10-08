@@ -1,0 +1,58 @@
+
+// MSSV:202418947
+// Ho ten: Dang Ngoc Minh
+
+using System;
+
+namespace LabW05
+{
+    // May tinh: ke thua lop Device va luon thuc thi interface INetworkable
+    public class Computer : Device, INetworkable
+    {
+        public int RamGB { get; set; }           // dung luong RAM (GB)
+        public string CpuType { get; set; }      // loai bo xu ly
+        public bool HasDiscreteGpu { get; set; } // co GPU roi hay khong
+
+        // ---------- phan thuc thi INetworkable ----------
+        public string IpAddress { get; private set; } = "";
+        public bool IsConnected { get; private set; }
+
+        public Computer(string deviceId, string deviceName, int purchaseYear,
+                        decimal purchasePrice, int ramGB, string cpuType, bool hasDiscreteGpu)
+            : base(deviceId, deviceName, purchaseYear, purchasePrice)
+        {
+            RamGB = ramGB;
+            CpuType = cpuType;
+            HasDiscreteGpu = hasDiscreteGpu;
+        }
+
+        public override decimal CalculateAnnualMaintenanceCost()
+        {
+            decimal percent = 5m;                  // 5% gia mua
+            if (HasDiscreteGpu) percent += 2m;     // + 2% neu co GPU roi
+            // TODO: can kiem tra lai dieu kien "tren 5 nam" (dang dung >= 5, chua dung nghia de bai)
+            if (YearsInUse >= 5) percent += 1m;    // + 1% neu da dung tren 5 nam
+            return PurchasePrice * percent / 100m;
+        }
+
+        public void Connect(string ipAddress)
+        {
+            // TODO: bo sung kiem tra IP rong va truong hop da ket noi roi
+            IpAddress = ipAddress;
+            IsConnected = true;
+        }
+
+        public void Disconnect()
+        {
+            IsConnected = false;
+            // TODO: quen xoa dia chi IP cu (de bai yeu cau phai xoa IP)
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() +
+                   " | Loai: May tinh | RAM: " + RamGB + "GB | CPU: " + CpuType +
+                   " | GPU roi: " + (HasDiscreteGpu ? "Co" : "Khong");
+        }
+    }
+}
