@@ -1,0 +1,41 @@
+// MSSV: 202418947
+// Ho ten: Dang Ngoc Minh
+
+using System;
+
+namespace LabW05
+{
+    // May in co ket noi mang: ke thua Printer va thuc thi INetworkable.
+    // Dung cach "ke thua + interface" nen no vua la Printer vua co kha nang mang.
+    public class NetworkPrinter : Printer, INetworkable
+    {
+        public string IpAddress { get; private set; } = "";
+        public bool IsConnected { get; private set; }
+
+        public NetworkPrinter(string deviceId, string deviceName, int purchaseYear,
+                              decimal purchasePrice, PrinterType type, int pagesPrinted,
+                              bool isColor)
+            : base(deviceId, deviceName, purchaseYear, purchasePrice, type, pagesPrinted, isColor, true)
+        {
+            // tham so cuoi cung la true = may in nay luon ho tro mang
+        }
+
+        public void Connect(string ipAddress)
+        {
+            // TODO: giong lop Computer, chua kiem tra IP rong / da ket noi
+            IpAddress = ipAddress;
+            IsConnected = true;
+        }
+
+        public void Disconnect()
+        {
+            IsConnected = false;
+            // TODO: quen xoa IP
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + " [la may in mang]";
+        }
+    }
+}
