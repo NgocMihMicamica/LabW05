@@ -22,7 +22,13 @@ namespace LabW05
 
         public void Connect(string ipAddress)
         {
-            // TODO: giong lop Computer, chua kiem tra IP rong / da ket noi
+            // FIX (sua tu v1): kiem tra IP rong va trang thai da ket noi (giong lop Computer)
+            if (string.IsNullOrWhiteSpace(ipAddress))
+                throw new ArgumentException("Dia chi IP khong duoc de trong!");
+
+            if (IsConnected)
+                throw new InvalidOperationException("Thiet bi dang ket noi roi, khong the ket noi lai!");
+
             IpAddress = ipAddress;
             IsConnected = true;
         }
@@ -30,7 +36,7 @@ namespace LabW05
         public void Disconnect()
         {
             IsConnected = false;
-            // TODO: quen xoa IP
+            IpAddress = ""; // FIX (sua tu v1): xoa IP khi ngat ket noi
         }
 
         public override string ToString()
