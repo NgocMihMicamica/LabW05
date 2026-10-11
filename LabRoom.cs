@@ -21,7 +21,12 @@ namespace LabW05
         // Them thiet bi vao phong, tra ve true neu thanh cong
         public bool AddDevice(Device device)
         {
-            // TODO: chua kiem tra trung ma thiet bi, can bo sung sau
+            // FIX (sua tu v1): kiem tra trung ma truoc khi them
+            if (FindDevice(device.DeviceId) != null)
+            {
+                Console.WriteLine("Loi: da ton tai thiet bi ma " + device.DeviceId + " trong phong " + RoomName);
+                return false;
+            }
             _devices.Add(device);
             return true;
         }
