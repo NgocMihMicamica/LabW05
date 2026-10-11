@@ -3,7 +3,6 @@
 // Ho ten: Dang Ngoc Minh
 
 using System;
-
 namespace LabW05
 {
     // May tinh: ke thua lop Device va luon thuc thi interface INetworkable
@@ -30,14 +29,21 @@ namespace LabW05
         {
             decimal percent = 5m;                  // 5% gia mua
             if (HasDiscreteGpu) percent += 2m;     // + 2% neu co GPU roi
-            // TODO: can kiem tra lai dieu kien "tren 5 nam" (dang dung >= 5, chua dung nghia de bai)
-            if (YearsInUse >= 5) percent += 1m;    // + 1% neu da dung tren 5 nam
+            // FIX (sua tu v1): de bai yeu cau "tren 5 nam" phai dung > 5, truoc do sai thanh >= 5
+            if (YearsInUse > 5) percent += 1m;     // + 1% neu da dung tren 5 nam
             return PurchasePrice * percent / 100m;
         }
 
         public void Connect(string ipAddress)
         {
-            // TODO: bo sung kiem tra IP rong va truong hop da ket noi roi
+            // FIX (sua tu v1): kiem tra dia chi IP khong duoc rong
+            if (string.IsNullOrWhiteSpace(ipAddress))
+                throw new ArgumentException("Dia chi IP khong duoc de trong!");
+
+            // FIX (sua tu v1): khong cho phep ket noi lai khi dang ket noi
+            if (IsConnected)
+                throw new InvalidOperationException("Thiet bi dang ket noi roi, khong the ket noi lai!");
+
             IpAddress = ipAddress;
             IsConnected = true;
         }
@@ -45,7 +51,7 @@ namespace LabW05
         public void Disconnect()
         {
             IsConnected = false;
-            // TODO: quen xoa dia chi IP cu (de bai yeu cau phai xoa IP)
+            IpAddress = ""; // FIX (sua tu v1): xoa dia chi IP khi da ngat ket noi
         }
 
         public override string ToString()
